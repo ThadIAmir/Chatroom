@@ -1,0 +1,33 @@
+{% extends 'base/main.html' %}
+{% load rest_framework %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/update_user.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container flex justify-center items-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-lg w-full bg-white p-8 shadow-lg rounded-lg">
+        <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-6">Edit Your Profile</h2>
+
+        <form method="POST" action="" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                <div class="mt-1">
+                    {{ field|add_class:"form-input" }}
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="flex justify-between items-center">
+                <a href="{% url 'home' %}" class="btn-cancel">Cancel</a>
+                <button type="submit" class="btn-submit">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

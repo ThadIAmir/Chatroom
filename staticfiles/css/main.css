@@ -1,0 +1,97 @@
+/* Base Variables */
+:root {
+    --primary-color: #3B82F6;
+    --success-color: #10B981;
+    --error-color: #EF4444;
+    --warning-color: #F59E0B;
+    --text-primary: #1F2937;
+    --text-secondary: #6B7280;
+    --bg-light: #F9FAFB;
+    --border-color: #E5E7EB;
+    --transition-speed: 0.2s;
+}
+
+/* Messages/Alerts */
+.message-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    max-width: 400px;
+    width: 90%;
+}
+
+.alert {
+    @apply p-4 rounded-lg shadow-lg mb-3 flex items-center justify-between;
+    background: white;
+    border-left: 4px solid;
+    animation: slideDown 0.3s ease-out forwards;
+}
+
+.alert-success {
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.alert-error {
+    border-color: var(--error-color);
+    color: var(--error-color);
+}
+
+.alert-info {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.alert-content {
+    @apply flex items-center gap-3;
+}
+
+.alert-icon {
+    @apply w-5 h-5 flex-shrink-0;
+}
+
+.alert-message {
+    @apply text-sm font-medium;
+    color: var(--text-primary);
+}
+
+.alert-close {
+    @apply ml-4 text-xl font-bold cursor-pointer opacity-70 hover:opacity-100;
+    transition: opacity var(--transition-speed) ease;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Footer */
+.footer {
+    @apply py-6 mt-12 border-t;
+    border-color: var(--border-color);
+    background: var(--bg-light);
+}
+
+.copyright {
+    @apply text-center text-sm;
+    color: var(--text-secondary);
+}
+
+/* Utility Classes */
+.container {
+    @apply px-4 mx-auto max-w-7xl;
+}
+
+/* Transitions */
+a, button {
+    transition: color var(--transition-speed) ease, 
+                background-color var(--transition-speed) ease,
+                opacity var(--transition-speed) ease;
+}

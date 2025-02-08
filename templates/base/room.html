@@ -1,0 +1,87 @@
+{% extends 'base/main.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/room.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="room-container">
+    <main class="room-main">
+        <!-- Room Header -->
+        <article class="room-header card">
+            <div class="room-meta">
+                <h1 class="room-title">{{ room.name }}</h1>
+                <time class="room-creation">{{ room.created|timesince }} ago</time>
+            </div>
+            <p class="room-description">{{ room.description }}</p>
+            <div class="room-host">
+                <span class="host-label">Hosted by:</span>
+                <a href="{% url 'user-profile' room.host.id %}" class="host-link">
+                    @{{ room.host.username }}
+                </a>
+            </div>
+        </article>
+
+        <!-- Conversation Thread -->
+        <section class="conversation">
+            <div class="messages-container">
+                {% for message in room_messages %}
+                <div class="message-card">
+                    <div class="message-header">
+                        <a href="{% url 'user-profile' message.user.id %}" class="message-author">
+                            @{{ message.user.username }}
+                        </a>
+                        <time class="message-time">{{ message.created|timesince }} ago</time>
+                    </div>
+                    <div class="message-content">
+                        <p>{{ message.body }}</p>
+                        {% if request.user == message.user %}
+                        <div class="message-actions">
+                            <a href="{% url 'delete-message' message.id %}" class="delete-message">
+                                Delete
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if request.user.is_authenticated %}
+            <form method="POST" class="message-form">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" name="body" placeholder="Write your message..."
+                           required class="message-input">
+                    <button type="submit" class="send-button">
+                        <svg class="send-icon" viewBox="0 0 24 24">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+            {% endif %}
+        </section>
+    </main>
+
+    <!-- Participants Sidebar -->
+    <aside class="participants-sidebar">
+        <div class="participants-card card">
+            <h3 class="participants-title">Participants</h3>
+            <div class="participants-list">
+                {% for participant in participants %}
+                <a href="{% url 'user-profile' participant.id %}" class="participant">
+{#                    {% if user.online_status.is_online %}#}
+{#                        <span class="status-dot bg-green-500"></span> Online#}
+{#                    {% else %}#}
+{#                        <span class="status-dot bg-red-500"></span> Offline#}
+{#                    {% endif %}#}
+                    <span class="participant-name">💠 {{ participant.username }}</span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </aside>
+</div>
+{% endblock %}
