@@ -3,8 +3,6 @@ Django settings for ChatRoom project.
 """
 import os
 from pathlib import Path
-
-# import dj_database_url
 import dj_database_url
 from decouple import config
 
@@ -13,15 +11,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 
-# DEBUG = config('DEBUG')
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-# ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS')
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -139,9 +134,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # -----------------
 
-# CSRF_TRUSTED_ORIGINS = [
-#     "https://web-production-d168.up.railway.app",
-# ]
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
-# X_FRAME_OPTIONS = 'DENY'
+CSRF_TRUSTED_ORIGINS = [
+    "https://railway address",
+]
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+X_FRAME_OPTIONS = 'DENY'
