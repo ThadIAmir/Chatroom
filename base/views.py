@@ -77,18 +77,18 @@ def home(request):
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    room_messages = room.message_set.all()
+    room_messages = room.message_set.all().order_by('updated','created')
     participants = room.participants.all()
 
-    if request.method == 'POST':
-        form = MessageForm(request.POST)
-        if form.is_valid():
-            message = form.save(commit=False)
-            message.user = request.user
-            message.room = room
-            message.save()
-            room.participants.add(request.user)
-            return redirect('room', pk=room.id)
+    # if request.method == 'POST':
+    #     form = MessageForm(request.POST)
+    #     if form.is_valid():
+    #         message = form.save(commit=False)
+    #         message.user = request.user
+    #         message.room = room
+    #         message.save()
+    #         room.participants.add(request.user)
+    #         return redirect('room', pk=room.id)
 
     now = timezone.now()
     threshold = now - timedelta(hours=24)

@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'base.apps.BaseConfig',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,20 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'ChatRoom.wsgi.application'
+ASGI_APPLICATION = 'ChatRoom.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("172.21.121.131", 6379)],
+            "capacity": 1500,
+            "expiry": 10,
+        },
+    },
+}
 
 
 # Database
