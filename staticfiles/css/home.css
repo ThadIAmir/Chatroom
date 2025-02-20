@@ -36,7 +36,7 @@ body {
 .grid-layout {
     display: grid;
     grid-template-columns: 280px 1fr 280px;
-    gap: 2rem;
+    gap: 3.5rem;
 }
 
 @media (max-width: 1024px) {
@@ -109,7 +109,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 0.75rem;
 }
 
 .main-title {
@@ -273,6 +273,7 @@ body {
 .user-handle {
     font-weight: 500;
     color: var(--primary-color);
+    padding-right: 1rem;
 }
 
 .timestamp {
@@ -287,6 +288,7 @@ body {
     margin-top: 0.75rem;
     font-size: 0.875rem;
     color: var(--text-secondary);
+    word-wrap: break-word;
 }
 
 .room-link {
@@ -298,3 +300,34 @@ body {
 .room-link:hover {
     text-decoration: underline;
 }
+
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 60%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    font-size: 16px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-left: none;
+    background-color: #4f46e5;
+    color: white;
+    font-size: 16px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #4338ca;
+}
+

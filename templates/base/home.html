@@ -8,6 +8,7 @@
 {% block content %}
 <div class="container">
     <div class="grid-layout">
+
         <!-- Topics Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-inner">
@@ -29,6 +30,10 @@
 
         <!-- Main Content -->
         <main class="main-content">
+            <form method="GET" class="search-bar">
+                <input type="text" name="q" value="{{ q }}" placeholder="Search rooms..." class="search-input">
+                <button type="submit" class="search-button">Search</button>
+            </form>
             <header class="main-header">
                 <h1 class="main-title">Study Rooms</h1>
                 {% if request.user.is_authenticated %}
@@ -96,4 +101,5 @@
         </aside>
     </div>
 </div>
+
 {% endblock content %}

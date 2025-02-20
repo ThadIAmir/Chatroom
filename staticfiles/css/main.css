@@ -11,23 +11,36 @@
     --transition-speed: 0.2s;
 }
 
-/* Messages/Alerts */
+/* Alert Message Container */
 .message-container {
     position: fixed;
-    top: 1rem;
-    right: 1rem;
-    z-index: 1000;
-    max-width: 400px;
+    top: 20px;
+    right: 20px;
+    max-width: 400px; /* Prevents it from being too large */
     width: 90%;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
+/* Alert Box */
 .alert {
-    @apply p-4 rounded-lg shadow-lg mb-3 flex items-center justify-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    font-weight: 500;
     background: white;
     border-left: 4px solid;
     animation: slideDown 0.3s ease-out forwards;
 }
 
+/* Different Alert Types */
 .alert-success {
     border-color: var(--success-color);
     color: var(--success-color);
@@ -43,32 +56,44 @@
     color: var(--primary-color);
 }
 
-.alert-content {
-    @apply flex items-center gap-3;
-}
-
+/* Icon inside the Alert */
 .alert-icon {
-    @apply w-5 h-5 flex-shrink-0;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
 }
 
+/* Message Text */
 .alert-message {
-    @apply text-sm font-medium;
+    flex-grow: 1;
     color: var(--text-primary);
+    font-size: 14px;
 }
 
+/* Close Button */
 .alert-close {
-    @apply ml-4 text-xl font-bold cursor-pointer opacity-70 hover:opacity-100;
-    transition: opacity var(--transition-speed) ease;
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease-in-out;
 }
 
+.alert-close:hover {
+    opacity: 1;
+}
+
+/* Slide Down Animation */
 @keyframes slideDown {
     from {
-        transform: translateY(-20px);
         opacity: 0;
+        transform: translateY(-20px);
     }
     to {
-        transform: translateY(0);
         opacity: 1;
+        transform: translateY(0);
     }
 }
 

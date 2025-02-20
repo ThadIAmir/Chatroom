@@ -27,41 +27,103 @@
         <section class="conversation">
             <div class="messages-container">
                 {% for message in room_messages %}
-                <div class="message-card">
+                <div class="message-card" data-msg-id="{{ message.id }}">
                     <div class="message-header">
                         <a href="{% url 'user-profile' message.user.id %}" class="message-author">
                             @{{ message.user.username }}
                         </a>
-                        <time class="message-time">{{ message.created|timesince }} ago</time>
+                        {% if message.created_within_24 %}
+                            <time class="message-time">
+                                Sent at: <b>{{ message.created|timesince }} ago</b>
+                            </time>
+                        {% else %}
+                            <time class="message-time">
+                                Sent at: <b>{{ message.created }}</b>
+                            </time>
+                        {% endif %}
+
+                        {% if message.updated > message.created %}
+                            {% if message.updated_within_24 %}
+                                <time class="message-time">
+                                    Edited at: <b>{{ message.updated|timesince }} ago</b>
+                                </time>
+                            {% else %}
+                                <time class="message-time">
+                                    Edited at: <b>{{ message.updated }}</b>
+                                </time>
+                            {% endif %}
+                        {% endif %}
                     </div>
                     <div class="message-content">
-                        <p>{{ message.body }}</p>
-                        {% if request.user == message.user %}
-                        <div class="message-actions">
-                            <a href="{% url 'delete-message' message.id %}" class="delete-message">
-                                Delete
-                            </a>
+                        {% if message.replied_msg %}
+                        <div class="reply-preview">
+                            <span class="reply-label">Replied to:</span>
+                            <span class="reply-text">{{ message.replied_msg.body|truncatechars:50 }}</span>
                         </div>
                         {% endif %}
+                        <p>{{ message.body }}</p>
+                        <div class="message-actions">
+                            <!-- Reply Button -->
+                            {% if request.user.is_authenticated %}
+                                <button class="reply-btn" data-reply-id="{{ message.id }}" type="button">
+                                    <svg class="reply-icon" viewBox="0 0 24 24">
+                                        <path d="M10 9V5l-7 7 7 7v-4.1c5 0 8 1.7 11 5.1-1-5-4-10-11-10z"></path>
+                                    </svg>
+                                    Reply
+                                </button>
+                            {% endif %}
+                            {% if request.user == message.user %}
+                            <a href="{% url 'update-message' message.id %}">
+                                <button class="update-message" type="button">
+                                    <svg class="edit-icon" viewBox="0 0 24 24">
+                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02
+                                                 0-1.41l-2.34-2.34a1.003 1.003 0 00-1.41 0l-1.83
+                                                 1.83 3.75 3.75 1.83-1.83z"></path>
+                                    </svg>
+                                    Edit
+                                </button>
+                            </a>
+
+                            <a href="{% url 'delete-message' message.id %}">
+                                <button class="delete-message" type="button">
+                                    <svg class="delete-icon" viewBox="0 0 24 24">
+                                        <path d="M16 9v10H8V9h8m-1.5-6h-5l-1
+                                                 1H5v2h14V4h-4.5l-1-1z"></path>
+                                    </svg>
+                                    Delete
+                                </button>
+                            </a>
+
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
 
             {% if request.user.is_authenticated %}
-            <form method="POST" class="message-form">
-                {% csrf_token %}
-                <div class="input-group">
-                    <input type="text" name="body" placeholder="Write your message..."
-                           required class="message-input">
-                    <button type="submit" class="send-button">
-                        <svg class="send-icon" viewBox="0 0 24 24">
-                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
-                        </svg>
-                    </button>
-                </div>
-            </form>
+                <form method="POST" class="message-form">
+                    {% csrf_token %}
+                    <!-- Reply Banner (hidden by default) -->
+                    <div class="reply-banner" id="reply-banner" style="display: none;">
+                        <span class="replying-to">Replying to: </span>
+                        <span id="reply-text"></span>
+                        <button type="button" id="cancel-reply">Cancel</button>
+                    </div>
+                    <div class="input-group">
+                        <textarea name="body" placeholder="Write your message..."
+                                  required class="message-input" dir="auto" maxlength="500"></textarea>
+                        <!-- Hidden field for replied_msg -->
+                        <input type="hidden" name="replied_msg" id="id_replied_msg">
+                        <button type="submit" class="send-button">
+                            <svg class="send-icon" viewBox="0 0 24 24">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
             {% endif %}
+
         </section>
     </main>
 
@@ -72,11 +134,6 @@
             <div class="participants-list">
                 {% for participant in participants %}
                 <a href="{% url 'user-profile' participant.id %}" class="participant">
-{#                    {% if user.online_status.is_online %}#}
-{#                        <span class="status-dot bg-green-500"></span> Online#}
-{#                    {% else %}#}
-{#                        <span class="status-dot bg-red-500"></span> Offline#}
-{#                    {% endif %}#}
                     <span class="participant-name">💠 {{ participant.username }}</span>
                 </a>
                 {% endfor %}
@@ -84,4 +141,34 @@
         </div>
     </aside>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Auto-resize textarea
+    const textarea = document.querySelector(".message-input");
+    textarea.addEventListener("input", function () {
+        this.style.height = "40px"; // Reset height
+        this.style.height = this.scrollHeight + "px"; // Expand dynamically
+    });
+
+    // Reply functionality
+    document.querySelectorAll('.reply-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var replyId = this.getAttribute('data-reply-id');
+            document.getElementById('id_replied_msg').value = replyId;
+
+            // Get the closest message card and extract message text
+            var messageCard = this.closest('.message-card');
+            var messageText = messageCard.querySelector('.message-content p').innerText;
+            document.getElementById('reply-text').innerText = messageText;
+            document.getElementById('reply-banner').style.display = 'flex';
+        });
+    });
+
+    document.getElementById('cancel-reply').addEventListener('click', function () {
+        document.getElementById('id_replied_msg').value = '';
+        document.getElementById('reply-banner').style.display = 'none';
+    });
+});
+</script>
 {% endblock %}

@@ -24,4 +24,6 @@ urlpatterns = [
 
     # Message Management
     path('delete-message/<str:pk>/', views.deleteMessage, name="delete-message"),
+    path('update-message/<str:pk>/', views.updateMessage, name="update-message"),
+
 ]
