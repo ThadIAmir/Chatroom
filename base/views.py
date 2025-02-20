@@ -75,30 +75,6 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
-# def room(request, pk):
-#     room = Room.objects.get(id=pk)
-#     room_messages = room.message_set.all()
-#     participants = room.participants.all()
-#
-#     if request.method == 'POST':
-#         message = Message.objects.create(
-#             user=request.user,
-#             room=room,
-#             body=request.POST.get('body')
-#         )
-#         room.participants.add(request.user)
-#         return redirect('room', pk=room.id)
-#
-#     now = timezone.now()
-#     threshold = now - timedelta(hours=24)
-#
-#     for message in room_messages:
-#         message.created_within_24 = message.created >= threshold
-#         message.updated_within_24 = message.updated >= threshold
-#
-#     context = {'room': room, 'room_messages': room_messages,
-#                'participants': participants}
-#     return render(request, 'base/room.html', context)
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
