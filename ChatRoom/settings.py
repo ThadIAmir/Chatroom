@@ -159,7 +159,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # -----------------
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://railway address",
+    "https://chatroom-production-076b.up.railway.app",
 ]
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
