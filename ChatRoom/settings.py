@@ -68,12 +68,23 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("172.21.121.131", 6379)],
+            "hosts": [(config('WSL_IP'), config('REDIS_PORT'))],
             "capacity": 1500,
             "expiry": 10,
         },
     },
 }
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [config('REDIS_URL')],
+#             "capacity": 1500,
+#             "expiry": 10,
+#         },
+#     },
+# }
+
 
 
 # Database
@@ -83,7 +94,6 @@ CHANNEL_LAYERS = {
 # DATABASES = {
 #     'default': dj_database_url.config(default=config('DATABASE_URL'))
 # }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
