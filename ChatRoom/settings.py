@@ -64,26 +64,26 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ChatRoom.wsgi.application'
 ASGI_APPLICATION = 'ChatRoom.asgi.application'
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [(config('WSL_IP'), config('REDIS_PORT'))],
-            "capacity": 1500,
-            "expiry": 10,
-        },
-    },
-}
 # CHANNEL_LAYERS = {
 #     "default": {
 #         "BACKEND": "channels_redis.core.RedisChannelLayer",
 #         "CONFIG": {
-#             "hosts": [config('REDIS_URL')],
+#             "hosts": [(config('WSL_IP'), config('REDIS_PORT'))],
 #             "capacity": 1500,
 #             "expiry": 10,
 #         },
 #     },
 # }
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [config('REDIS_URL')],
+            "capacity": 1500,
+            "expiry": 10,
+        },
+    },
+}
 
 
 
@@ -91,19 +91,19 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-# DATABASES = {
-#     'default': dj_database_url.config(default=config('DATABASE_URL'))
-# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'USER': config('DB_USER'),
-        'PORT': config('DB_PORT'),
-    }
+    'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': config('DB_NAME'),
+#         'PASSWORD': config('DB_PASSWORD'),
+#         'HOST': config('DB_HOST'),
+#         'USER': config('DB_USER'),
+#         'PORT': config('DB_PORT'),
+#     }
+# }
 
 
 
