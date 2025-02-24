@@ -138,10 +138,7 @@ This project is licensed under the MIT License.
 
 Here are some screenshots of the Django-ChatRoom in action!
 
-![Chat Room Screenshot](assets/screenshot1.png)  
-*Example of a chat room interface.*
-
-![Message Threading](assets/screenshot2.png)  
-*Message threading and replies in action.*
+![Homepage Screenshot](assets/Homepage.png)  
+*Homepage interface.*
 
 Enjoy real-time chatting! 🎉🚀
