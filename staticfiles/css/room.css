@@ -440,6 +440,10 @@ body {
     border-radius: 4px;
 }
 
+.reply-preview:hover {
+    font-size: 1rem;
+}
+
 .reply-preview .reply-label {
     font-weight: bold;
     margin-right: 0.3rem;
@@ -492,4 +496,25 @@ body {
     color: #dc3545;
     cursor: pointer;
     font-size: 0.9rem;
+}
+
+.highlight {
+  background-color: #5adcff;
+  transition: background-color 1s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
+  animation: fadeHighlight 3s forwards;
+  border-radius: 0.25rem;
+}
+
+@keyframes fadeHighlight {
+  0% {
+    background-color: #5adcff;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.highlight:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 10px rgba(90, 220, 255, 0.7);
 }

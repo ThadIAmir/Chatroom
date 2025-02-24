@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Q, Subquery, OuterRef
 from django.contrib.auth import authenticate, login, logout
 from django.utils import timezone
 
@@ -69,16 +69,27 @@ def home(request):
     room_count = rooms.count()
     room_messages = Message.objects.filter(
         Q(room__topic__name__icontains=q))[0:3]
+    active_topic = request.GET.get('q', None)
 
-    context = {'rooms': rooms, 'topics': topics,
-               'room_count': room_count, 'room_messages': room_messages}
+    context = {'rooms': rooms, 'topics': topics, 'room_count': room_count,
+               'room_messages': room_messages, 'active_topic': active_topic}
     return render(request, 'base/home.html', context)
 
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all().order_by('updated','created')
-    participants = room.participants.all()
+    # participants = room.participants.all().order_by('username') --- ordering by username
+
+    # ordering by whoever first send msg
+    participants = room.participants.annotate(
+        first_message_time=Subquery(
+            Message.objects.filter(
+                user_id=OuterRef('id'),
+                room_id=room.id
+            ).values('created').order_by('created')[:1]
+        )
+    ).order_by('first_message_time', 'username')
 
     # if request.method == 'POST':
     #     form = MessageForm(request.POST)
@@ -104,7 +115,7 @@ def room(request, pk):
 
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
-    rooms = user.room_set.all()
+    rooms = user.hosted_rooms.all()
     room_messages = user.message_set.all()
     topics = Topic.objects.all()
     context = {'user': user, 'rooms': rooms,
@@ -159,12 +170,15 @@ def updateRoom(request, pk):
 @login_required(login_url='login')
 def deleteRoom(request, pk):
     room = Room.objects.get(id=pk)
-
+    topic = room.topic
     if request.user != room.host:
         raise Http404('Your are not allowed here!!')
 
     if request.method == 'POST':
         room.delete()
+        if not topic.rooms.exists():
+            topic.delete()
+
         return redirect('home')
     return render(request, 'base/delete.html', {'obj': room})
 

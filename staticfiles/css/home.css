@@ -81,11 +81,17 @@ body {
     transition: all 0.2s ease;
 }
 
-.topic-pill.active,
+.topic-pill.active {
+    background: var(--primary-color);
+    color: white;
+    font-weight: bold;
+}
+
 .topic-pill:hover {
     background: var(--primary-color);
     color: white;
 }
+
 
 .btn-link {
     display: flex;

@@ -13,16 +13,16 @@ class Topic(models.Model):
 
 
 class Room(models.Model):
-    host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='hosted_rooms')
     topic = models.ForeignKey(Topic, on_delete=models.PROTECT,
-                              max_length=150, null=False, blank=False)
+                              max_length=150, null=False, blank=False, related_name='rooms')
 
     name = models.CharField(max_length=150, null=False, blank=False,
                             validators=[MinLengthValidator(3, "Please provide a name.")])
 
     description = models.TextField(null=True, blank=True, max_length=500)
     participants = models.ManyToManyField(
-        User, related_name='participants', blank=True
+        User, related_name='joined_rooms', blank=True
     )
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)

@@ -120,3 +120,7 @@ a, button {
                 background-color var(--transition-speed) ease,
                 opacity var(--transition-speed) ease;
 }
+
+* {
+    word-wrap: break-word;
+}

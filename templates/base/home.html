@@ -102,4 +102,17 @@
     </div>
 </div>
 
+
+<script>
+    document.querySelectorAll('.topic-pill').forEach(function(topic) {
+        topic.addEventListener('click', function() {
+            document.querySelectorAll('.topic-pill').forEach(function(item) {
+                item.classList.remove('active');
+            });
+            topic.classList.add('active');
+        });
+    });
+
+</script>
+
 {% endblock content %}

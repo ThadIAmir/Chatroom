@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Update Message</title>
   <style>
     body {
-      /*background: linear-gradient(to right, #667eea, #764ba2);*/
       font-family: 'Poppins', sans-serif;
     }
     .container {
@@ -20,6 +20,8 @@
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       animation: fadeIn 0.5s ease-in-out;
+      width: 100%;
+      max-width: 600px; /* Set a max width for larger screens */
     }
     h2 {
       color: #333;
@@ -79,6 +81,34 @@
       to {
         opacity: 1;
         transform: translateY(0);
+      }
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+      .max-w-lg {
+        padding: 1.5rem;
+      }
+      h2 {
+        font-size: 20px;
+      }
+      .form-input {
+        padding: 0.5rem;
+      }
+      .btn-cancel,
+      .btn-submit {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 18px;
+      }
+      .btn-cancel,
+      .btn-submit {
+        padding: 0.4rem 0.8rem;
+        font-size: 12px;
       }
     }
   </style>
