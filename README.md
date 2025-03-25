@@ -98,13 +98,12 @@ A modern real-time chatroom application built with Django and WebSockets, offeri
 - **Backend**:
     - Django
     - Django Channels
-    - Redis
     - WebSockets
     - Daphne ASGI server
 - **Frontend**:
     - HTML5
     - CSS3
-    - JavaScript (Real-time features)
+    - JavaScript 
 - **Database**:
     - PostgreSQL
 - **Infrastructure**:
